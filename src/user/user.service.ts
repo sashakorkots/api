@@ -1,36 +1,42 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './user.interface';
+import { User } from './interfaces/user.interface';
 
 @Injectable()
 export class UserService {
-    private users = new Map<number,User>([
-        [1,{
-            name: 'Sasha',
-            phone: '+1884525845',
-        }],
-        [2,{
-            name: 'Vanya',
-            phone: '+8646846148'
-        }], 
-    ]);
-    
-    getUsers(): Map<number, User> {
-        return  this.users;
-    }
+  private users = new Map<number, User>([
+    [
+      1,
+      {
+        name: 'Sasha',
+        phone: '+1884525845',
+      },
+    ],
+    [
+      2,
+      {
+        name: 'Vanya',
+        phone: '+8646846148',
+      },
+    ],
+  ]);
 
-    getUser(id: number): User {
-        return this.users[1];
-    }
+  getUsers(): Map<number, User> {
+    return this.users;
+  }
 
-    updateUser(id: number, newUser: User):User {
-        return this.users[id] = {...this.users[id], ...newUser};
-    }
+  getUser(id: number): User {
+    return this.users[id];
+  }
 
-    deleteUser(id: number): boolean {
-        return this.users.delete(id);
-    }
+  updateUser(id: number, newUser: User): User {
+    return (this.users[id] = { ...this.users[id], ...newUser });
+  }
 
-    hasUserId(id: number): boolean {
-        return this.users.has(id);
-    }
+  deleteUser(id: number): boolean {
+    return this.users.delete(id);
+  }
+
+  hasUserId(id: number): boolean {
+    return this.users.has(id);
+  }
 }

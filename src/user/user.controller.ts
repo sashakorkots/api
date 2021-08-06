@@ -1,11 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
-import { User } from './user.interface';
+import { User } from './interfaces/user.interface';
 import { UserService } from './user.service';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userServise: UserService) {}
-  
+
   @Get()
   getAllUsers(): Map<number, User> {
     return this.userServise.getUsers();
