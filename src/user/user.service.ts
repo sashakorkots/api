@@ -1,42 +1,46 @@
 import { Injectable } from '@nestjs/common';
+import { createUserDTO } from './dto/createUserDTO';
 import { User } from './interfaces/user.interface';
 
 @Injectable()
 export class UserService {
-  private users = new Map<number, User>([
-    [
-      1,
-      {
-        name: 'Sasha',
-        phone: '+1884525845',
-      },
-    ],
-    [
-      2,
-      {
-        name: 'Vanya',
-        phone: '+8646846148',
-      },
-    ],
-  ]);
+  private users: User[] = [
+    {
+      id: 0,
+      name: 'Sasha',
+      phone: '+5564541',
+    },
+  ];
 
-  getUsers(): Map<number, User> {
+  getUsers() {
     return this.users;
   }
 
   getUser(id: number): User {
-    return this.users[id];
+    return this.users.find((user) => user.id == id);
   }
 
-  updateUser(id: number, newUser: User): User {
-    return (this.users[id] = { ...this.users[id], ...newUser });
+  createUser(newUser: createUserDTO): User {
+    const user: User = {
+      id: this.users.length,
+      ...newUser,
+    };
+    this.users.push(user);
+    return user;
+  }
+
+  updateUser(id: number, newUser: createUserDTO): User {
+    const user: User = this.getUser(id);
+    const index: number = this.users.indexOf(user);
+    return (this.users[index] = { ...user, ...newUser });
   }
 
   deleteUser(id: number): boolean {
-    return this.users.delete(id);
+    this.users = this.users.filter((user) => user.id == id);
+    return this.hasUserId(id);
   }
 
   hasUserId(id: number): boolean {
-    return this.users.has(id);
+    return !!this.getUser(id);
   }
 }
